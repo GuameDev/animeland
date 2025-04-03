@@ -1,6 +1,8 @@
 using Animeland.API.Extensions.ServiceCollectionExtensions;
 using Animeland.API.Extensions.WebApplicationBuilderExtensions;
 using Animeland.API.Options;
+using Animeland.Application.Extensions;
+using Animeland.Infrastructure.Extensions;
 using Serilog;
 
 namespace Animeland.API
@@ -23,7 +25,11 @@ namespace Animeland.API
             AppSettings appSettings = builder.BuildAppSettingsOptions();
 
             // Core API services
-            builder.Services.AddApiServices(appSettings);
+            builder.Services
+                .AddApiServices(appSettings)
+                .AddApplicationServices()
+                .AddInfrastructureServices()
+                .AddPersistence(builder.Configuration);
 
             // Swagger config
             builder.Services.AddSwaggerDocumentation(appSettings);
