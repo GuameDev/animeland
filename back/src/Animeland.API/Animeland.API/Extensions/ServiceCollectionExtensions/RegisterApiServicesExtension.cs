@@ -6,7 +6,6 @@ namespace Animeland.API.Extensions.ServiceCollectionExtensions
     {
         public static IServiceCollection AddApiServices(this IServiceCollection services, AppSettings appSettings)
         {
-
             services.AddControllers();
             services.AddEndpointsApiExplorer();
 

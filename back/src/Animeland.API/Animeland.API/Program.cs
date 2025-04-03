@@ -1,6 +1,7 @@
 using Animeland.API.Extensions.ServiceCollectionExtensions;
 using Animeland.API.Extensions.WebApplicationBuilderExtensions;
 using Animeland.API.Options;
+using Serilog;
 
 namespace Animeland.API
 {
@@ -8,7 +9,16 @@ namespace Animeland.API
     {
         public static void Main(string[] args)
         {
+            Log.Logger = new LoggerConfiguration()
+                .ReadFrom.Configuration(new ConfigurationBuilder()
+                .AddJsonFile("appsettings.json")
+                .Build())
+                .Enrich
+                .FromLogContext()
+                .CreateLogger();
+
             var builder = WebApplication.CreateBuilder(args);
+            builder.Host.UseSerilog();
 
             AppSettings appSettings = builder.BuildAppSettingsOptions();
 
@@ -25,10 +35,24 @@ namespace Animeland.API
                 app.UseSwaggerDocumentation();
             }
             app.UseCors(CorsOptions.PolicyName);
+            app.UseSerilogRequestLogging();
             app.UseHttpsRedirection();
             app.UseAuthorization();
             app.MapControllers();
-            app.Run();
+
+            try
+            {
+                Log.Information("Starting up Animeland.API...");
+                app.Run();
+            }
+            catch (Exception ex)
+            {
+                Log.Fatal(ex, "Application start-up failed");
+            }
+            finally
+            {
+                Log.CloseAndFlush();
+            }
 
         }
     }
