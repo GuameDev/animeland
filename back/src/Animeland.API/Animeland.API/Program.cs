@@ -28,8 +28,8 @@ namespace Animeland.API
             builder.Services
                 .AddApiServices(appSettings)
                 .AddApplicationServices()
-                .AddInfrastructureServices()
-                .AddPersistence(builder.Configuration);
+                .AddPersistence(builder.Configuration)
+                .AddInfrastructureServices();
 
             // Swagger config
             builder.Services.AddSwaggerDocumentation(appSettings);

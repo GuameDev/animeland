@@ -1,5 +1,7 @@
-﻿using Animeland.Infrastructure.Persistence;
+﻿using Animeland.Application.Animes;
+using Animeland.Infrastructure.Persistence;
 using Animeland.Infrastructure.Persistence.Interceptors;
+using Animeland.Infrastructure.Persistence.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -10,6 +12,7 @@ namespace Animeland.Infrastructure.Extensions
     {
         public static IServiceCollection AddInfrastructureServices(this IServiceCollection services)
         {
+            services.AddScoped<IAnimeRepository, AnimeRepository>();
             return services;
         }
 

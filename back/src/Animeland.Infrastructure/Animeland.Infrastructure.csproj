@@ -16,6 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Animeland.Application\Animeland.Application.csproj" />
     <ProjectReference Include="..\Animeland.Domain\Animeland.Domain.csproj" />
   </ItemGroup>
 
