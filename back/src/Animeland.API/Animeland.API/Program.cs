@@ -1,4 +1,5 @@
 using Animeland.API.Extensions.ServiceCollectionExtensions;
+using Animeland.API.Extensions.WebApplicationBuilderExtensions;
 using Animeland.API.Options;
 
 namespace Animeland.API
@@ -9,17 +10,13 @@ namespace Animeland.API
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            AppSettings appSettings = builder.BuildAppSettingsOptions();
 
-            // Centralized app options
-            builder.Services.AddAppOptions(builder.Configuration);
-
-            var swaggerOptions = new SwaggerOptions();
-            builder.Configuration.GetSection(nameof(SwaggerOptions)).Bind(swaggerOptions);
             // Core API services
-            builder.Services.AddApiServices();
+            builder.Services.AddApiServices(appSettings);
 
             // Swagger config
-            builder.Services.AddSwaggerDocumentation(swaggerOptions);
+            builder.Services.AddSwaggerDocumentation(appSettings);
 
             var app = builder.Build();
 
@@ -27,7 +24,7 @@ namespace Animeland.API
             {
                 app.UseSwaggerDocumentation();
             }
-
+            app.UseCors(CorsOptions.PolicyName);
             app.UseHttpsRedirection();
             app.UseAuthorization();
             app.MapControllers();

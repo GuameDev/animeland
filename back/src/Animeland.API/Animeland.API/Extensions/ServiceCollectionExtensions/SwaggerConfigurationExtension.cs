@@ -6,15 +6,15 @@ namespace Animeland.API.Extensions.ServiceCollectionExtensions
 {
     public static class SwaggerConfigurationExtension
     {
-        public static IServiceCollection AddSwaggerDocumentation(this IServiceCollection services, SwaggerOptions swaggerOptions)
+        public static IServiceCollection AddSwaggerDocumentation(this IServiceCollection services, AppSettings appSettings)
         {
             services.AddSwaggerGen(options =>
             {
-                options.SwaggerDoc(swaggerOptions.Version, new OpenApiInfo
+                options.SwaggerDoc(appSettings.Swagger.Version, new OpenApiInfo
                 {
-                    Title = swaggerOptions.Title,
-                    Version = swaggerOptions.Version,
-                    Description = swaggerOptions.Description
+                    Title = appSettings.Swagger.Title,
+                    Version = appSettings.Swagger.Version,
+                    Description = appSettings.Swagger.Description
                 });
             });
 
