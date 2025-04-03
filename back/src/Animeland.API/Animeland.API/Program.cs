@@ -1,3 +1,5 @@
+using Animeland.API.Extensions.ServiceCollectionExtensions;
+using Animeland.API.Options;
 
 namespace Animeland.API
 {
@@ -7,28 +9,30 @@ namespace Animeland.API
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
 
-            builder.Services.AddControllers();
-            // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-            builder.Services.AddOpenApi();
+            // Centralized app options
+            builder.Services.AddAppOptions(builder.Configuration);
+
+            var swaggerOptions = new SwaggerOptions();
+            builder.Configuration.GetSection(nameof(SwaggerOptions)).Bind(swaggerOptions);
+            // Core API services
+            builder.Services.AddApiServices();
+
+            // Swagger config
+            builder.Services.AddSwaggerDocumentation(swaggerOptions);
 
             var app = builder.Build();
 
-            // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
-                app.MapOpenApi();
+                app.UseSwaggerDocumentation();
             }
 
             app.UseHttpsRedirection();
-
             app.UseAuthorization();
-
-
             app.MapControllers();
-
             app.Run();
+
         }
     }
 }
