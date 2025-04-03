@@ -7,6 +7,8 @@ namespace Animeland.API.Extensions.ServiceCollectionExtensions
         public static IServiceCollection AddApiServices(this IServiceCollection services, AppSettings appSettings)
         {
             services.AddControllers();
+            services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
+            services.AddProblemDetails();
             services.AddEndpointsApiExplorer();
 
             services.AddCors(options =>
